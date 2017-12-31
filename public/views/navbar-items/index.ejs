@@ -84,10 +84,8 @@
             socket.emit('requestColors', function(blank) {});
 
             socket.on('newColors',function(data){
-                COLORED_PIXELS = data;
-                for (var i = 0; i < COLORED_PIXELS.length; i++) {
-                    ctx.fillRect(data[i][0], data[i][1], 10, 10);
-                }
+                COLORED_PIXELS += data;
+                ctx.fillRect(data[0], data[1], 10, 10);
             });
 
             document.onmousedown = function(event) {

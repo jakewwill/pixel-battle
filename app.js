@@ -61,7 +61,7 @@ io.sockets.on('connection', function(socket) {
 	socket.on('addColor', function(data) {
 		PIXELS_COLORED.push(data);
 
-		io.emit('newColors', PIXELS_COLORED);
+		io.emit('newColors', data);
 	});
 
 	// Resends the colors to the specific client requesting them
