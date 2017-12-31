@@ -1,0 +1,122 @@
+<!-- views/index.ejs -->
+<!doctype html>
+<html>
+<head>
+	<title>Pixel Battle</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="/stylesheets/style.css" type="text/css">
+    <link rel="shortcut icon" type="image/x-icon" href="https://s3-us-west-1.amazonaws.com/technologybasis/coding.png" />
+
+    <!-- I included the jquery code here to ensure the $window call below works as expected-->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <% if (message != null) { %>
+        <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+
+    <% if (user == null) { %>
+        <div class="login_window" id="login_window">
+            <h1>Login</h1>
+
+            <!-- SIGNUP FORM -->
+            <form action="/login" method="post" class="login_form">
+                <div class="form-group">
+                    <label>Email: </label>
+                    <input type="text" class="form-control login_textarea" name="email">
+                </div>
+                <div class="form-group">
+                    <label>Password: </label>
+                    <input type="password" class="form-control login_textarea" name="password">
+                </div>
+                <button type="submit" class="btn btn-warning btn-lg">Login</button>
+            </form>
+            <p>Don't have an account? <a onclick="change_to_signup()">Signup</a></p>
+        </div>
+
+        <div class="signup_window" id="signup_window" style="display: none">
+            <h1>Signup</h1>
+
+            <!-- SIGNUP FORM -->
+            <form action="/signup" method="post" class="signup_form">
+                <div class="form-group">
+                    <label>Email: </label>
+                    <input type="text" class="form-control signup_textarea" name="email">
+                </div>
+                <div class="form-group">
+                    <label>Username: </label>
+                    <input type="text" class="form-control signup_textarea" name="username">
+                </div>
+                <div class="form-group">
+                    <label>Password: </label>
+                    <input type="password" class="form-control signup_textarea" name="password">
+                </div>
+                <button type="submit" class="btn btn-warning btn-lg">Signup</button>
+            </form>
+            <p>Already have an account? <a onclick="change_to_login()">Login</a></p>
+        </div>
+    <% } else { %>
+        <canvas id="game_canvas" style="border: 1px solid black"></canvas>
+
+        <!-- Socket.io Code - only runs if logged in -->
+        <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+
+        <script type="text/javascript">
+            // Canvas
+            var canvas = document.getElementById("game_canvas");
+            var ctx = canvas.getContext("2d");
+
+            canvas.width = $(window).width()
+            canvas.height = $(window).height()
+
+            // Resize the canvas when the browser window changes size
+            $(window).resize(function() {
+                canvas.width = $(window).width()
+                canvas.height = $(window).height()
+
+                socket.emit('requestColors', function(blank) {});
+            });
+            
+            // Server connections
+            var socket = io();
+
+            // Makes a request for the colors to be sent to this client only
+            socket.emit('requestColors', function(blank) {});
+
+            socket.on('newColors',function(data){
+                COLORED_PIXELS = data;
+                for (var i = 0; i < COLORED_PIXELS.length; i++) {
+                    ctx.fillRect(data[i][0], data[i][1], 10, 10);
+                }
+            });
+
+            document.onmousemove = function(event) {
+                var position = [event.x, event.y];
+                socket.emit('addColor', position);
+            }
+        </script>
+    <% } %>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        function change_to_signup() {
+            console.log("Hi");
+            var login_window = document.getElementById("login_window");
+            var signup_window = document.getElementById("signup_window");
+
+            login_window.style.display = "none";
+            signup_window.style.display = "block";
+        }
+
+        function change_to_login() {
+            console.log("Hi");
+            var login_window = document.getElementById("login_window");
+            var signup_window = document.getElementById("signup_window");
+
+            login_window.style.display = "block";
+            signup_window.style.display = "none";
+        }
+    </script>
+</body>
+</html>

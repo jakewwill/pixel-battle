@@ -1,0 +1,51 @@
+body {
+	background-color: #eee;
+}
+
+p {
+	margin-top: 10px;
+}
+
+.signup_window {
+	background-color: white;
+	width: 400px;
+	height: 400px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin: -200px 0 0 -200px;
+	border-radius: 40px;
+	text-align: center;
+}
+
+.signup_form {
+	margin-top: 20px;
+	text-align: center;
+}
+
+.signup_textarea {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.login_window {
+	background-color: white;
+	width: 400px;
+	height: 400px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin: -200px 0 0 -200px;
+	border-radius: 40px;
+	text-align: center;
+}
+
+.login_form {
+	margin-top: 20px;
+	text-align: center;
+}
+
+.login_textarea {
+	width: 90%;
+	margin: 0 auto;
+}
