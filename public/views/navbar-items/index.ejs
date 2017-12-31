@@ -90,7 +90,7 @@
                 }
             });
 
-            document.onmousemove = function(event) {
+            document.onmousedown = function(event) {
                 var position = [event.x, event.y];
                 socket.emit('addColor', position);
             }
